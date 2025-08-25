@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage.jsx';
 import PokemonDetail from '../pages/PokemonDetail.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import FavoritesPage from '../pages/FavoritesPage.jsx';
+import DashboardPage from '../pages/DashboardPage.jsx';
 
 const AppContent = () => {
   const { currentPage, loading, error } = useSharedState();
@@ -16,7 +17,7 @@ const AppContent = () => {
       case 'home': return <HomePage />;
       case 'pokemon-detail': return <PokemonDetail />;
       case 'favorites': return <FavoritesPage />;
-
+      case 'dashboard': return <DashboardPage />;
       default: return <NotFoundPage />;
     }
   };

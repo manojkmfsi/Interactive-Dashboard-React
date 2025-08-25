@@ -18,24 +18,26 @@ export function SharedStateProvider({ children }) {
     }
   });
 
+  const fetchPokemons = async (page) => {
+    try {
+      setLoading(true);
+      const data = await fetchPokemonData(page);
+      setPokemonList(pokemonList.concat(data));
+      setError(null);
+      return data;
+    } catch (e) {
+      setError("Could not fetch data. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchPokemonData();
-        setPokemonList(data);
-        setError(null);
-      } catch (e) {
-        setError("Could not fetch data. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    fetchPokemons(1);
   }, []);
 
   const value = {
-    pokemonList,
+    pokemonList, setPokemonList,
     currentPage, setCurrentPage,
     loading, error,
     favorites, setFavorites,

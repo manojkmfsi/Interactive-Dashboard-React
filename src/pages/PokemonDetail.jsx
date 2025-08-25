@@ -1,6 +1,7 @@
+import MyComments from '../components/MyComments.jsx';
 import { useSharedState } from '../context/SharedStateContext.jsx';
 
-const HeartIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>);
+const HeartIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>);
 
 const PokemonDetail = () => {
   const { selectedPokemon, favorites, setFavorites, setCurrentPage } = useSharedState();
@@ -28,12 +29,6 @@ const PokemonDetail = () => {
     }
   };
 
-  const getStatColor = (value) => {
-    if (value > 100) return 'bg-purple-500';
-    if (value > 70) return 'bg-green-500';
-    if (value > 40) return 'bg-yellow-500';
-    return 'bg-red-500';
-  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 space-y-6">
@@ -55,13 +50,13 @@ const PokemonDetail = () => {
             {selectedPokemon.stats.map(stat => (
               <div key={stat.stat.name} className="flex items-center gap-4">
                 <span className="capitalize font-semibold w-24">{stat.stat.name}:</span>
-                <div className="flex-1 bg-gray-200 rounded-full h-4"><div className={`h-full rounded-full ${getStatColor(stat.base_stat)}`} style={{ width: `${Math.min(100, (stat.base_stat / 150) * 100)}%` }}></div></div>
                 <span className="font-bold w-10 text-right">{stat.base_stat}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
+      <MyComments></MyComments>
     </div>
   );
 };

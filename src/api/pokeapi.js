@@ -1,10 +1,10 @@
 /**
  * Fetches the initial list of Pokemon and their detailed data.
- * @returns {Array}.
  */
-export async function fetchPokemonData() {
+export async function fetchPokemonData(page = 1) {
+  const params = (page === 0) ? 'limit=-1' : `limit=20&offset=${(page - 1) * 20}`;
   try {
-    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?'+params);
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }
