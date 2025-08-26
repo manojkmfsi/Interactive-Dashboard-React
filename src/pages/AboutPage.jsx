@@ -9,6 +9,7 @@ const AboutPage = () => {
     <ul>
       <li>Home Page</li>
       <li>Item Detail Page</li>
+      <li>Favorite Page</li>
       <li>Dashboard / Stats Page</li>
       <li>About / Info Page</li>
     </ul>
@@ -22,9 +23,9 @@ const AboutPage = () => {
     <p className="text-xl font-bold">State Management & Communication</p>
     <ul>
       <li>Component-level state: For search input, comment input, toggle buttons</li>
-      <li>    Shared state: Favorites, selected item stats
+      <li>Shared state: Favorites, selected item stats
       </li>
-      <li>    Props drilling or Context API: For communication between Header, Home, and Favorites components
+      <li>Props drilling or Context API: For communication between Header, Home, and Favorites components
       </li>
     </ul>
     <p className="text-xl font-bold">Features</p>

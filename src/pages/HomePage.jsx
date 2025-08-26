@@ -39,8 +39,8 @@ const HomePage = () => {
         dataLength={pokemonList.length}
         next={handleLoadMoreData}
         hasMore={loadMore}
-        loader={<p>Loading...</p>}
-        endMessage={<p>No more data to load.</p>}>
+        loader={<p className="text-center">Loading...</p>}
+        endMessage={<p className="text-center">No more data to load.</p>}>
 
         <div className="grid  md:grid-cols-5 gap-4">
           {filteredPokemon.map(pokemon => (
