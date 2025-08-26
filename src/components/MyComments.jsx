@@ -1,5 +1,6 @@
 import { useSharedState } from '../context/SharedStateContext.jsx';
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
 const MyComments = () => {
     const { selectedPokemon } = useSharedState();
@@ -13,7 +14,7 @@ const MyComments = () => {
             return [];
         }
     });
-    
+
     const pokeComments = comments.filter(c => (c?.pokemon_id && c.pokemon_id === selectedPokemon.id));
 
     const handleCommentSubmit = () => {
@@ -21,11 +22,13 @@ const MyComments = () => {
         setCommentInput('');
         setComment(newComments);
         localStorage.setItem('myComments', JSON.stringify(newComments));
+        toast('Comment added.');
     }
     const handleCommentRemove = (index) => {
         const allComments = comments.filter((c, i) => i !== index);
         setComment(allComments);
         localStorage.setItem('myComments', JSON.stringify(allComments));
+        toast('Comment deleted.');
     }
     return (
         <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-inner mt-6">

@@ -1,11 +1,13 @@
 import { useSharedState } from '../context/SharedStateContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const FavoritesPage = () => {
-  const { favorites, setSelectedPokemon, setCurrentPage } = useSharedState();
+  const navigate = useNavigate();
+  const { favorites, setSelectedPokemon } = useSharedState();
 
   const handleSelectPokemon = (pokemon) => {
     setSelectedPokemon(pokemon);
-    setCurrentPage('pokemon-detail');
+    navigate('/pokemon-detail');
   };
 
   return (

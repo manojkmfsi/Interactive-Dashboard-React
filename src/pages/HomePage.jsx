@@ -2,26 +2,25 @@ import { useState } from 'react';
 import { useSharedState } from '../context/SharedStateContext.jsx';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchPokemonData } from '../api/pokeapi.js';
+import { useNavigate } from 'react-router-dom';
 
 
 const HomePage = () => {
-  const { pokemonList, setSelectedPokemon, setCurrentPage, setPokemonList } = useSharedState();
+  const navigate = useNavigate();
+  const { pokemonList, setSelectedPokemon, setPokemonList } = useSharedState();
   const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
   const [loadMore, setLoadMore] = useState(true);
 
   const filteredPokemon = pokemonList.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleSelectPokemon = (pokemon) => {
     setSelectedPokemon(pokemon);
-    setCurrentPage('pokemon-detail');
+    navigate('/pokemon-detail');
   };
   const handleLoadMoreData = async () => {
-    const nextPage = page + 1;
-    const data = await fetchPokemonData(nextPage);
+    const data = await fetchPokemonData(pokemonList.length);
     setLoadMore(data.length > 0);
     setPokemonList(pokemonList.concat(data));
-    setPage(nextPage);
   };
 
   return (

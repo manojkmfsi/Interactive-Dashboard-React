@@ -1,8 +1,8 @@
 /**
  * Fetches the initial list of Pokemon and their detailed data.
  */
-export async function fetchPokemonData(page = 1) {
-  const params = (page === 0) ? 'limit=-1' : `limit=20&offset=${(page - 1) * 20}`;
+export async function fetchPokemonData(offset = 0) {
+  const params = (offset === -1) ? 'limit=500' : `limit=20&offset=${offset}`;
   try {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon?'+params);
     if (!response.ok) {

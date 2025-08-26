@@ -1,14 +1,16 @@
-import { useSharedState } from '../context/SharedStateContext.jsx';
+import { useState, useEffect } from 'react';
+import { fetchPokemonData } from '../api/pokeapi';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const DashboardPage = () => {
-  const { pokemonList } = useSharedState();
+  const [chartData, setChartData] = useState([]);
 
-  const getTypeData = () => {
+  const getTypeData = (pokemons) => {
     const typeCount = {};
-    pokemonList.forEach(pokemon => {
+    pokemons.forEach(pokemon => {
       pokemon.types.forEach(type => {
-        typeCount[type] = (typeCount[type] || 0) + 1;
+        typeCount[type] = typeCount[type] || 0;
+        typeCount[type] += 1;
       });
     });
     return Object.keys(typeCount).map(type => ({
@@ -17,13 +19,21 @@ const DashboardPage = () => {
     }));
   };
 
-  const chartData = getTypeData();
+  useEffect(() => {
+    const getAllPokemons = async () => {
+      const pokemonsList = await fetchPokemonData(-1);
+      const chartDataList = getTypeData(pokemonsList);
+      setChartData(chartDataList);
+    }
+    getAllPokemons();
+  }, []);
+
 
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-center">Pokemon Dashboard</h2>
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h3 className="text-xl font-bold mb-4 text-center">Pokemon by Type</h3>
+        <h3 className="text-xl font-bold mb-4 text-center">500 Pokemons by Type</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <XAxis dataKey="name" className="capitalize text-sm" />
