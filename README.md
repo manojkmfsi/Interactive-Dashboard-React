@@ -32,11 +32,11 @@ To get this project up and running on your local machine, follow these steps:
 
 Clone the repository:
 
-     git clone [repository-url]
+     git clone https://github.com/manojkmfsi/Interactive-Dashboard-React.git
 
 Navigate to the project directory:
 
-    cd [project-folder-name]
+    cd Interactive-Dashboard-React
 
 Install the dependencies:
 
