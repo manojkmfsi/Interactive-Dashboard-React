@@ -3,6 +3,7 @@ import { useSharedState } from '../context/SharedStateContext.jsx';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchPokemonData } from '../api/pokeapi.js';
 import { useNavigate } from 'react-router-dom';
+import Search from '../components/Search.jsx';
 
 
 const HomePage = () => {
@@ -11,36 +12,38 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loadMore, setLoadMore] = useState(true);
 
-  const filteredPokemon = pokemonList.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  let filteredPokemon = pokemonList.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleSelectPokemon = (pokemon) => {
     setSelectedPokemon(pokemon);
     navigate('/pokemon-detail');
   };
+
   const handleLoadMoreData = async () => {
     const data = await fetchPokemonData(pokemonList.length);
     setLoadMore(data.length > 0);
     setPokemonList(pokemonList.concat(data));
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setPokemonList(filteredPokemon);
+
+    if (term == '') {
+      handleLoadMoreData();
+    }
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-center">Pokemons</h2>
-      <div className="relative mb-6">
-        <input
-          type="text"
-          placeholder="Search Pokemon..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-3 rounded-lg border"
-        />
-      </div>
+      <Search onSearch={handleSearch} />
       <InfiniteScroll
-        dataLength={pokemonList.length}
+        dataLength={filteredPokemon.length}
         next={handleLoadMoreData}
         hasMore={loadMore}
-        loader={<p className="text-center">Loading...</p>}
-        endMessage={<p className="text-center">No more data to load.</p>}>
+        loader={!searchTerm ? <p className="text-center">Loading...</p> : ''}
+        endMessage={!searchTerm ? <p className="text-center">No more data to load.</p> : ''}>
 
         <div className="grid  md:grid-cols-5 gap-4">
           {filteredPokemon.map(pokemon => (
