@@ -1,12 +1,10 @@
+import Favorite from '../components/Favorite.jsx';
 import MyComments from '../components/MyComments.jsx';
 import { useSharedState } from '../context/SharedStateContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-const HeartIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>);
 
 const PokemonDetail = () => {
-  const { selectedPokemon, favorites, setFavorites } = useSharedState();
+  const { selectedPokemon, favorites } = useSharedState();
   const navigate = useNavigate();
 
   if (!selectedPokemon) {
@@ -20,26 +18,11 @@ const PokemonDetail = () => {
 
   const isFavorite = favorites.some(fav => fav.id === selectedPokemon.id);
 
-  const handleToggleFavorite = () => {
-    if (isFavorite) {
-      const favs = favorites.filter(fav => fav.id !== selectedPokemon.id);
-      localStorage.setItem('favorites', JSON.stringify(favs));
-      setFavorites(favs);
-      toast('Favorite removed.');
-    } else {
-      const favs = [...favorites, selectedPokemon];
-      localStorage.setItem('favorites', JSON.stringify(favs));
-      setFavorites(favs);
-      toast('Favorite added.');
-    }
-  };
-
-
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 space-y-6">
       <div className="flex justify-between items-start">
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 hover:text-red-500"><span className="hidden md:inline">Back</span></button>
-        <button onClick={handleToggleFavorite} className={`p-2 rounded-full ${isFavorite ? 'bg-red-500 text-white' : 'bg-gray-200'}`}><HeartIcon /></button>
+        <Favorite isFavorite={isFavorite}></Favorite>
       </div>
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
         <div className="flex-shrink-0 text-center">

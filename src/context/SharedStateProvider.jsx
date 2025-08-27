@@ -37,7 +37,7 @@ export function SharedStateProvider({ children }) {
 
   const value = {
     pokemonList, setPokemonList,
-    loading, error,
+    loading, error, setLoading,
     favorites, setFavorites,
     selectedPokemon, setSelectedPokemon,
   };

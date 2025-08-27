@@ -7,15 +7,24 @@ import FavoritesPage from '../pages/FavoritesPage.jsx';
 import DashboardPage from '../pages/DashboardPage.jsx';
 import AboutPage from '../pages/AboutPage.jsx';
 import { Routes, Route } from 'react-router-dom';
-import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 const AppContent = () => {
   const { loading, error } = useSharedState();
 
   const renderPage = () => {
-    if (loading) return <div className="text-center p-8">Loading Pokemons...</div>;
+    if (loading) return <div className="text-center p-8">Loading...</div>;
     if (error) return <div className="text-center p-8 text-red-500">Error: {error}</div>;
+    return <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pokemon-detail" element={<PokemonDetail />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   };
 
   return (
@@ -25,16 +34,7 @@ const AppContent = () => {
         pauseOnHover
         theme="light" />
       <main className="container mx-auto p-4 md:p-8">
-        <Suspense fallback={renderPage()}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/pokemon-detail" element={<PokemonDetail />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
+        {renderPage()}
       </main>
     </div>
   );
