@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchPokemonData } from '../api/pokeapi';
+import { fetchAllPokemonData } from '../api/pokeapi';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const DashboardPage = () => {
@@ -23,7 +23,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const getAllPokemons = async () => {
       setIsLoading(true);
-      const pokemonsList = await fetchPokemonData(-1);
+      const pokemonsList = await fetchAllPokemonData();
       const chartDataList = getTypeData(pokemonsList);
       setChartData(chartDataList);
       setIsLoading(false);

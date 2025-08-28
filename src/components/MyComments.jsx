@@ -2,6 +2,9 @@ import { useSharedState } from '../context/SharedStateContext.jsx';
 import { useState } from "react";
 import { toast } from 'react-toastify';
 
+function generateId() {
+	return crypto.randomUUID()
+}
 const MyComments = () => {
     const { selectedPokemon } = useSharedState();
     const [commentInput, setCommentInput] = useState('');
@@ -15,17 +18,20 @@ const MyComments = () => {
         }
     });
 
-    const pokeComments = comments.filter(c => (c?.pokemon_id && c.pokemon_id === selectedPokemon.id));
+    const pokeComments = comments.filter(c => (c?.pokemon_id && c.id && c.pokemon_id === selectedPokemon.id));
 
     const handleCommentSubmit = () => {
-        const newComments = [...comments, { pokemon_id: selectedPokemon.id, value: commentInput }];
+        if(!commentInput){
+            return;
+        }
+        const newComments = [...comments, {id: generateId(), pokemon_id: selectedPokemon.id, value: commentInput }];
         setCommentInput('');
         setComment(newComments);
         localStorage.setItem('myComments', JSON.stringify(newComments));
         toast('Comment added.');
     }
-    const handleCommentRemove = (index) => {
-        const allComments = comments.filter((c, i) => i !== index);
+    const handleCommentRemove = (id) => {
+        const allComments = comments.filter((c) => c.id !== id);
         setComment(allComments);
         localStorage.setItem('myComments', JSON.stringify(allComments));
         toast('Comment deleted.');
@@ -37,11 +43,11 @@ const MyComments = () => {
                 {pokeComments.length === 0 ? (
                     <p className="text-gray-500 dark:text-gray-400">No comments yet.</p>
                 ) :
-                    pokeComments.map((comment, index) => (
-                        <div key={index} className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                    pokeComments.map((comment) => (
+                        <div key={comment.id} className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
                             <p className="text-gray-700 dark:text-gray-300 flex items-center gap-4">
                                 <span>{comment.value}</span>
-                                <button type="button" className="text-right bg-red-500 text-white font-bold px-1 text-sm rounded-lg hover:bg-red-600" onClick={() => handleCommentRemove(index)}>Delete</button>
+                                <button type="button" className="text-right bg-red-500 text-white font-bold px-1 text-sm rounded-lg hover:bg-red-600" onClick={() => handleCommentRemove(comment.id)}>Delete</button>
                             </p>
                         </div>
                     ))
