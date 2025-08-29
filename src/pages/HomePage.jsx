@@ -19,10 +19,15 @@ const HomePage = () => {
     navigate('/pokemon-detail');
   };
 
-  const handleLoadMoreData = async () => {
+  //fetch list of pokemon and append it in existing list
+  const fetchPokemons = async (pokemonList) => {
     const data = await fetchPokemonData(pokemonList.length);
-    setLoadMore(data.length > 0);
     setPokemonList(pokemonList.concat(data));
+    setLoadMore(data.length > 0);
+  };
+
+  const handleLoadMoreData = async () => {
+    fetchPokemons(pokemonList)
   };
 
   const handleSearch = useDebouncedCallback(async (term) => {
@@ -32,9 +37,7 @@ const HomePage = () => {
       setSearchTerm(term);
       setPokemonList([data]);
     } else {
-      const data = await fetchPokemonData(0);
-      setLoadMore(data.length > 0);
-      setPokemonList(data);
+      fetchPokemons([]);
     }
   }, 500);
 
