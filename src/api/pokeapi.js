@@ -52,7 +52,7 @@ export async function fetchAllPokemonData() {
       throw new Error('Failed to fetch data');
     }
     const data = await response.json();
-    
+
     // API does not provide all details in list, so fetch in loop 
     const detailedPokemon = await Promise.all(
       data.results.map(async (pokemon) => {
@@ -70,6 +70,27 @@ export async function fetchAllPokemonData() {
     return detailedPokemon;
   } catch (e) {
     console.error("Could not fetch Pokemon data", e);
+    throw e;
+  }
+}
+
+export  async function searchPokemon(name) {
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+     const detailData = await response.json();
+     return  {
+          id: detailData.id,
+          name: detailData.name,
+          types: detailData.types.map(t => t.type.name),
+          image: detailData.sprites.front_default,
+          stats: detailData.stats,
+        };
+
+  } catch (e) {
+    console.error("Could not fetch Pokemon details", e);
     throw e;
   }
 }
