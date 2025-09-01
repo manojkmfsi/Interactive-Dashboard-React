@@ -52,7 +52,7 @@ const HomePage = () => {
         loader={loading ? <p className="text-center">Loading...</p> : ''}
         endMessage={!searchTerm ? <p className="text-center">No more data to load.</p> : ''}>
 
-        <div className="grid  md:grid-cols-5 gap-4">
+        <div className="grid  md:grid-cols-4 gap-4">
           {!pokemonList.length && <p className="text-center">No Pokemon found.</p>}
           {pokemonList.map(pokemon => (
             <div key={pokemon.id} onClick={() => handleSelectPokemon(pokemon)} className="flex flex-col items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg cursor-pointer">
